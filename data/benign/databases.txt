@@ -1,0 +1,1 @@
+A database is a system used to store and organise information so that it can be accessed and updated efficiently. Relational databases organise data into tables containing rows and columns. Applications can query these databases to retrieve specific information.

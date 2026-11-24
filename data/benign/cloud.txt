@@ -1,0 +1,1 @@
+Cloud computing allows computing resources such as servers, storage, and applications to be accessed over a network. Instead of running all infrastructure locally, organisations can use remote computing resources and scale them according to their needs.
