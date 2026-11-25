@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from httpx2 import query
 from langchain_core.documents import Document
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_google_genai import (
@@ -7,6 +8,7 @@ from langchain_google_genai import (
     ChatGoogleGenerativeAI,
 )
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from defenses.context_separation import build_context_separated_prompt
 
 
 # --------------------------------------------------
@@ -75,7 +77,7 @@ llm = ChatGoogleGenerativeAI(
 # 6. RAG function
 # --------------------------------------------------
 
-def run_rag(query):
+def run_rag(query, defense="none"):
     # Retrieve the two most relevant chunks
     results = vector_store.similarity_search(
         query,
@@ -88,15 +90,22 @@ def run_rag(query):
     )
 
     # Construct the prompt
-    prompt = f"""
-Answer the question using the provided context.
+    if defense == "context_separation":
+        prompt = build_context_separated_prompt(
+            query=query,
+            context=context,
+        )
 
-Context:
-{context}
+    else:
+        prompt = f"""
+    Answer the question using the provided context.
 
-Question:
-{query}
-"""
+    Context:
+    {context}
+
+    Question:
+    {query}
+    """
 
     # Send the query + retrieved context to Gemini
     response = llm.invoke(prompt)
@@ -115,7 +124,10 @@ Question:
 if __name__ == "__main__":
     query = "How does a language model use external information?"
 
-    result = run_rag(query)
+    result = run_rag(
+        query,
+        defense="context_separation",
+    )
 
     print(f"\nQuery: {query}")
 
