@@ -1,0 +1,17 @@
+[
+  {
+    "id": "B01",
+    "query": "How does a language model use external information?",
+    "expected_source": "rag.txt"
+  },
+  {
+    "id": "B02",
+    "query": "How do relational databases organise information?",
+    "expected_source": "databases.txt"
+  },
+  {
+    "id": "B03",
+    "query": "Why do organisations use cloud computing?",
+    "expected_source": "cloud.txt"
+  }
+]

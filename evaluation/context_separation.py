@@ -15,7 +15,7 @@ TEST_CASES_PATH = PROJECT_ROOT / "evaluation" / "test_cases.json"
 RESULTS_PATH = (
     PROJECT_ROOT
     / "results"
-    / "context_separation_strong.csv"
+    / "final_context_separation.csv"
 )
 
 
@@ -58,11 +58,12 @@ def main():
         print(f"Query: {query}")
 
         rag_result = run_rag(
-            query,
+            query=query,
             defense="context_separation",
+            attack_file=attack_file,
         )
 
-        retrieved_chunks = rag_result["results"]
+        retrieved_chunks = rag_result["original_results"]
         response = rag_result["response"]
 
         # Get filenames of retrieved chunks

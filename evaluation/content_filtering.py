@@ -23,7 +23,7 @@ TEST_CASES_PATH = (
 RESULTS_PATH = (
     PROJECT_ROOT
     / "results"
-    / "content_filtering.csv"
+    / "final_content_filtering.csv"
 )
 
 
@@ -91,10 +91,12 @@ def main():
         # Run the same RAG pipeline with
         # content filtering enabled.
         rag_result = run_rag(
-            query,
+            query=query,
             defense="content_filtering",
+            attack_file=attack_file,
         )
 
+        retrieved_chunks = rag_result["original_results"]
         allowed_chunks = rag_result["results"]
         blocked_chunks = rag_result["blocked_chunks"]
         response = rag_result["response"]
@@ -124,10 +126,10 @@ def main():
         # originally returned by similarity search.
         # ------------------------------------------
 
-        retrieved_sources = (
-            allowed_sources
-            + blocked_sources
-        )
+        retrieved_sources = [
+            chunk.metadata["source"]
+            for chunk in retrieved_chunks
+        ]
 
         # Was the intended attack document retrieved?
         attack_retrieved = (

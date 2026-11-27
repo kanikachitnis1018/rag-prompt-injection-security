@@ -53,9 +53,13 @@ def main():
         print(f"\nRunning {test_id}...")
         print(f"Query: {query}")
 
-        rag_result = run_rag(query)
+        rag_result = run_rag(
+            query=query,
+            defense="none",
+            attack_file=attack_file,
+        )
 
-        retrieved_chunks = rag_result["results"]
+        retrieved_chunks = rag_result["original_results"]
         response = rag_result["response"]
 
         # Get filenames of retrieved chunks
